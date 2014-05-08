@@ -95,6 +95,7 @@ function tertiaryGenerator( template ) {
 		quirk: pick( personality.traits ),
 		abilities: []
 	};
+
 	function addAbility( ability, rank ) {
 		var specialties = {};
 		character.abilities.push({
@@ -111,6 +112,7 @@ function tertiaryGenerator( template ) {
 	if ( thirdAbility ) {
 		addAbility( type.related[ 1 ], thirdAbility );
 	}
+
 	var existingAbilities = character.abilities.map(function( ability ) {
 		return ability.name;
 	});
