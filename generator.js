@@ -75,7 +75,7 @@ var templates = {
 // Generate quirk
 
 function tertiaryGenerator( template ) {
-	var type = pick( template );
+	var type = pick( templates[ template ] );
 
 	var firstAbility = random( 2 ) + 2,
 		secondAbility = null,
@@ -125,16 +125,51 @@ function tertiaryGenerator( template ) {
 		add1B();
 	}
 
+	function find( ability ) {
+		var result = 2;
+		character.abilities.forEach(function( compareTo ) {
+			if ( ability === compareTo.name ) {
+				result = compareTo.rank;
+			}
+		});
+		return result;
+	}
+	function sum() {
+		var result = 0;
+		[].slice.call( arguments, 0 ).forEach(function( ability ) {
+			result += find( ability );
+		});
+		return result;
+	}
+	character.stats = template === "Courtier" ? [
+		{
+			name: "Intrigue Defense",
+			value: sum( "Awareness", "Cunning", "Status" )
+		},
+		{
+			name: "Composure",
+			value: find( "Will" ) * 3
+		}
+	] : [
+		{
+			name: "Combat Defense",
+			value: sum( "Agility", "Athletics", "Awareness" )
+		},
+		{
+			name: "Health",
+			value: find( "Endurance" ) * 3
+		}
+	];
+
 	$( "#output" ).prepend( tertiaryTmpl({
 		character: character
 	}) );
 }
 
-var template = random( 2 ) === 1 ? templates.Fighter : templates.Courtier;
-tertiaryGenerator( template );
+tertiaryGenerator( random( 2 ) === 1 ? "Fighter" : "Courtier" );
 
 $( "button" ).click(function() {
-	tertiaryGenerator( templates[ $( this ).text() ] );
+	tertiaryGenerator( $( this ).text() );
 });
 
 
