@@ -1,0 +1,16 @@
+body {
+	font-family: Arial;
+	font-size: .95em;
+}
+
+li {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+li:hover {
+	border: 1px solid blue;
+}
+
+ul {
+	width: 200px;
+}
