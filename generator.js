@@ -7,8 +7,8 @@ require.config({
 	}
 });
 
-require(["jquery", "abilities", "personality", "hb!tertiary.html"],
-	function($, abilities, personality, tertiaryTmpl) {
+require(["jquery", "abilities", "personality", "smallfolk-names", "hb!tertiary.html"],
+	function($, abilities, personality, smallfolkNames, tertiaryTmpl) {
 
 function random( sides ) {
 	return Math.floor(Math.random() * sides) + 1;
@@ -18,11 +18,10 @@ function pick( from ) {
 	return from[ random( from.length ) - 1 ];
 }
 
-function pickFromExcept( abilities, exclude ) {
-	var abilityNames = Object.keys( abilities );
+function pickFromExcept( from, exclude ) {
 	var escape = 0;
 	function roll() {
-		return pick( abilityNames );
+		return pick( from );
 	}
 	var result;
 	do {
@@ -59,22 +58,6 @@ var templates = {
 	]
 };
 
-// var generated = [];
-// for ( var i = 0; i < 2; i++ ) {
-// 	generated.push( pickFromExcept( abilities, generated ) );
-// }
-// console.log( generated.sort() );
-
-// var output = [];
-// Object.keys( abilities ).forEach(function( ability ) {
-// 	output.push("<li>" + ability + "</li>");
-// });
-// $( "#output" ).append( output );
-
-// $( "#output" ).append( tertiaryTmpl({
-// 	abilities: Object.keys( abilities )
-// }) );
-
 // Select one or two abilities and assign them rank 3 or 4.
 // If you assigned rank 4 to the first ability, select two more abilits and assign rank 3 to each.
 // Select two or three specialties. These speciatlies have 1B each.
@@ -108,7 +91,7 @@ function tertiaryGenerator( template ) {
 
 	var character = {
 		archetype: type.name,
-		name: "Name to be generated",
+		name: smallfolkNames(),
 		quirk: pick( personality.traits ),
 		abilities: []
 	};
@@ -127,6 +110,17 @@ function tertiaryGenerator( template ) {
 	}
 	if ( thirdAbility ) {
 		addAbility( type.related[ 1 ], thirdAbility );
+	}
+	var existingAbilities = character.abilities.map(function( ability ) {
+		return ability.name;
+	});
+	function add1B() {
+		var a1B = pickFromExcept( Object.keys( abilities ), existingAbilities );
+		existingAbilities.push( a1B );
+		addAbility( a1B, 2 );
+	}
+	while ( character.abilities.length <= 1) {
+		add1B();
 	}
 
 	$( "#output" ).prepend( tertiaryTmpl({
