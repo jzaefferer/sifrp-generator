@@ -7,8 +7,8 @@ require.config({
 	}
 });
 
-require(["jquery", "abilities", "personality", "smallfolk-names", "hb!tertiary.html"],
-	function($, abilities, personality, smallfolkNames, tertiaryTmpl) {
+require(["jquery", "abilities", "personality", "names", "equipment", "hb!tertiary.html"],
+	function($, abilities, personality, names, equip, tertiaryTmpl) {
 
 function random( sides ) {
 	return Math.floor(Math.random() * sides) + 1;
@@ -81,7 +81,7 @@ function tertiaryGenerator( template, status ) {
 
 	var character = {
 		archetype: type.name,
-		name: smallfolkNames(),
+		name: names(),
 		quirk: pick( personality.traits ),
 		abilities: []
 	};
@@ -91,7 +91,7 @@ function tertiaryGenerator( template, status ) {
 		character.abilities.push({
 			name: ability,
 			rank: rank,
-			specialty: pick( abilities[ ability ].specialties )
+			speciality: pick( abilities[ ability ].specialties )
 		});
 	}
 	addAbility( type.key, firstAbility );
@@ -107,7 +107,7 @@ function tertiaryGenerator( template, status ) {
 
 	if ( status !== 2 ) {
 		addAbility( "Status", status );
-		delete character.abilities[ character.abilities.length - 1 ].specialty;
+		delete character.abilities[ character.abilities.length - 1 ].speciality;
 	}
 	var existingAbilities = character.abilities.map(function( ability ) {
 		return ability.name;
@@ -156,12 +156,17 @@ function tertiaryGenerator( template, status ) {
 		}
 	];
 
+	equip( character );
+
 	$( "#output" ).prepend( tertiaryTmpl({
 		character: character
 	}) );
 }
 
 tertiaryGenerator( random( 2 ) === 1 ? "Fighter" : "Courtier", 2 );
+// for ( var i = 0; i < 50; i++) {
+// 	tertiaryGenerator( "Fighter", 2 );
+// }
 
 $( "button" ).click(function() {
 	var status = parseInt($( "#status" ).val(), 10 );

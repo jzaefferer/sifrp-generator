@@ -5,7 +5,7 @@ Especially noticable: {{character.quirk}}
 <ul>
 {{#each character.abilities}}
 	<li>
-		{{name}} {{rank}}{{#if specialty}}, 1B {{specialty}}{{/if}}
+		{{name}} {{rank}}{{#if speciality}}, 1B {{speciality}}{{/if}}
 	</li>
 {{/each}}
 </ul>
@@ -18,3 +18,10 @@ Especially noticable: {{character.quirk}}
 {{/each}}
 </ul>
 
+<p>
+	Armor: {{character.armor.type}}
+	<br>Weapon: {{character.weapon}}
+	{{#if shield}}
+		<br>Shield: {{character.shield}}
+	{{/if}}
+</p>
