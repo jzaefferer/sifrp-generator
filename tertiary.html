@@ -19,7 +19,9 @@ Especially noticable: {{character.quirk}}
 </ul>
 
 <p>
-	Armor: {{character.armor.type}}
+	{{#with character.armor}}
+		Armor: {{type}} (Rating: {{rating}}, Penalty: {{penalty}}, Bulk: {{bulk}})
+	{{/with}}
 	<br>Weapon: {{character.weapon}}
 	{{#if shield}}
 		<br>Shield: {{character.shield}}
