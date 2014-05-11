@@ -91,28 +91,28 @@ var meleeWeapons = {
 		"Frog Spear",
 		"Pike",
 		"Spear",
-		"Tourney Lance",
-		"Trident",
-		"War Lance"
+		// "Tourney Lance",
+		// "Trident",
+		// "War Lance"
 	]
 };
 var shields = [
 	"Buckler",
 	"Shield",
 	"Shield, Large",
-	"Shield, Tower"
+	// "Shield, Tower"
 ];
 var rangedWeapons = {
 	"Bows": [
-		"Double-curved bow",
+		// "Double-curved bow",
 		"Hunting bow",
 		"Longbow"
 	],
 	"Crossbows": [
-		"Crossbow, Heavy",
+		// "Crossbow, Heavy",
 		"Crossbow, Medium",
 		"Crossbow, Light",
-		"Crossbow, Myrish",
+		// "Crossbow, Myrish",
 	],
 	"Thrown": [
 		"Frog Spear (thrown)",
@@ -122,7 +122,7 @@ var rangedWeapons = {
 		"Net",
 		"Sling",
 		"Spear (thrown)",
-		"Trident (thrown)"
+		// "Trident (thrown)"
 	]
 };
 
