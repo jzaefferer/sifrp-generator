@@ -137,26 +137,33 @@ function tertiaryGenerator( template, status ) {
 		});
 		return result;
 	}
+	equip( character );
+
 	character.stats = [
-		{
-			name: "Intrigue Defense",
-			value: sum( "Awareness", "Cunning", "Status" )
-		},
 		{
 			name: "Composure",
 			value: find( "Will" ) * 3
 		},
 		{
-			name: "Combat Defense",
-			value: sum( "Agility", "Athletics", "Awareness" )
+			name: "Intrigue Defense",
+			value: sum( "Awareness", "Cunning", "Status" )
 		},
 		{
 			name: "Health",
 			value: find( "Endurance" ) * 3
+		},
+		{
+			name: "Combat Defense",
+			value: sum( "Agility", "Athletics", "Awareness" )
 		}
 	];
+	if (character.armor.penalty) {
+		character.stats.push({
+			name: "Combat Defense (armor)",
+			value: sum( "Agility", "Athletics", "Awareness" ) + character.armor.penalty
+		});
+	}
 
-	equip( character );
 
 	$( "#output" ).prepend( tertiaryTmpl({
 		character: character
