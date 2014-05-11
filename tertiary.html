@@ -1,11 +1,11 @@
-<h2>{{character.name}} ({{character.archetype}})</h2>
+<h2>{{character.name}}</h2>
 
 Especially noticable: {{character.quirk}}
 
 <ul>
 {{#each character.abilities}}
 	<li>
-		{{name}} {{rank}}, 1B {{specialty}}
+		{{name}} {{rank}}{{#if specialty}}, 1B {{specialty}}{{/if}}
 	</li>
 {{/each}}
 </ul>

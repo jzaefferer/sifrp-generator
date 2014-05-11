@@ -36,57 +36,47 @@ var templates = {
 		{
 			name: "Grunt",
 			key: "Fighting",
-			related: [ "Athletics", "Endurance" ]
+			related: [ "Athletics", "Awareness", "Endurance" ]
 		},
 		{
 			name: "Eagle Eye",
 			key: "Marksmanship",
-			related: [ "Agility", "Stealth" ]
+			related: [ "Agility", "Awareness", "Stealth" ]
 		}
 	],
 	Courtier: [
 		{
 			name: "A friendly face in the crowd",
 			key: "Persuasion",
-			related: [ "Awareness", "Will" ]
+			related: [ "Awareness", "Cunning", "Will" ]
 		},
 		{
 			name: "Your best friend",
 			key: "Deception",
-			related: [ "Cunning", "Will" ]
+			related: [ "Cunning", "Awareness", "Will" ]
 		}
 	]
 };
 
 // Select one or two abilities and assign them rank 3 or 4.
 // If you assigned rank 4 to the first ability, select two more abilits and assign rank 3 to each.
-// Select two or three specialties. These speciatlies have 1B each.
-// Calculate only those derived statistics relevant to the scene (Combat Defense for combats or Intrigue Defense for intrigues).
+// Select two or three specialties. These specialties have 1B each.
+// Calculate derived statistics
 // Equip the character as appropriate.
 
-// Generator:
-// 50/50 fighter or courtier, 50/50 melee/archer or charmer/scroundrel
-// Put 3 or 4 in key ability
-// If 4, put 3 in the two related abilities
-// If 3, 50% chance for a second ability with rank 3
-// Put 1B on key and two related, independent of rank
-// Calculate stats
-// Generate equipment
-// Generate quirk
-
-function tertiaryGenerator( template ) {
+function tertiaryGenerator( template, status ) {
 	var type = pick( templates[ template ] );
 
 	var firstAbility = random( 2 ) + 2,
 		secondAbility = null,
 		thirdAbility = null;
+		fourthAbility = null;
 
 	if ( firstAbility === 4 ) {
-		secondAbility = thirdAbility = 3;
-	} else {
-		if ( random( 2 ) === 1 ) {
-			secondAbility = 3;
-		}
+		secondAbility = random( 2 ) + 2;
+		thirdAbility = fourthAbility = 3;
+	} else if ( random( 2 ) === 1 ) {
+		secondAbility = random( 2 ) + 2;
 	}
 
 	var character = {
@@ -106,13 +96,19 @@ function tertiaryGenerator( template ) {
 	}
 	addAbility( type.key, firstAbility );
 	if ( secondAbility ) {
-		var which = thirdAbility ? 0 : random( 2 ) - 1;
-		addAbility( type.related[ which ], secondAbility );
+		addAbility( type.related[ 0 ], secondAbility );
 	}
 	if ( thirdAbility ) {
 		addAbility( type.related[ 1 ], thirdAbility );
 	}
+	if ( fourthAbility ) {
+		addAbility( type.related[ 2 ], fourthAbility );
+	}
 
+	if ( status !== 2 ) {
+		addAbility( "Status", status );
+		delete character.abilities[ character.abilities.length - 1 ].specialty;
+	}
 	var existingAbilities = character.abilities.map(function( ability ) {
 		return ability.name;
 	});
@@ -141,7 +137,7 @@ function tertiaryGenerator( template ) {
 		});
 		return result;
 	}
-	character.stats = template === "Courtier" ? [
+	character.stats = [
 		{
 			name: "Intrigue Defense",
 			value: sum( "Awareness", "Cunning", "Status" )
@@ -149,8 +145,7 @@ function tertiaryGenerator( template ) {
 		{
 			name: "Composure",
 			value: find( "Will" ) * 3
-		}
-	] : [
+		},
 		{
 			name: "Combat Defense",
 			value: sum( "Agility", "Athletics", "Awareness" )
@@ -166,10 +161,11 @@ function tertiaryGenerator( template ) {
 	}) );
 }
 
-tertiaryGenerator( random( 2 ) === 1 ? "Fighter" : "Courtier" );
+tertiaryGenerator( random( 2 ) === 1 ? "Fighter" : "Courtier", 2 );
 
 $( "button" ).click(function() {
-	tertiaryGenerator( $( this ).text() );
+	var status = parseInt($( "#status" ).val(), 10 );
+	tertiaryGenerator( $( this ).text(), status );
 });
 
 

@@ -1,10 +1,26 @@
 <!doctype html>
-<meta name="viewport" content="width=device-width">
-<meta charset="utf-8">
-<link rel="stylesheet" href="generator.css">
+<html>
+<head>
+	<title>SIFRP Tertiary NSC Generator</title>
+	<meta name="viewport" content="width=device-width">
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="generator.css">
+</head>
+<body>
+	<p>
+		Choose status for new characters:
+		<select id="status">
+			<option>0</option>
+			<option>1</option>
+			<option selected>2</option>
+			<option>3</option>
+		</select>
+	</p>
+	Generate another <button>Fighter</button> or <button>Courtier</button>
 
-Generate another <button>Fighter</button> or <button>Courtier</button>
 
-<div id="output"></div>
+	<div id="output"></div>
 
-<script src="bower_components/requirejs/require.js" data-main="generator.js"></script>
+	<script src="bower_components/requirejs/require.js" data-main="generator.js"></script>
+</body>
+</html>
